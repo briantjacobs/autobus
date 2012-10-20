@@ -1,0 +1,38 @@
+[
+    {
+        "stop_name": "Germantown & Bethlehem",
+        "arrival_time": "4:38am"
+    },
+    {
+        "stop_name": "Germantown Ave & Westview Ave",
+        "arrival_time": "4:45am"
+    },
+    {
+        "stop_name": "Germantown Ave & Chelten Ave",
+        "arrival_time": "4:49am"
+    },
+    {
+        "stop_name": "Broad St & Erie Ave",
+        "arrival_time": "4:59am"        
+    },
+    {
+        "stop_name": "Germantown Ave & Lehigh Ave",
+        "arrival_time": "5:04am"
+    },
+    {
+        "stop_name": "12th St & Girard Ave",
+        "arrival_time": "5:12am"
+    },
+    {
+        "stop_name": "12th St & Market St",
+        "arrival_time": "5:18am"
+    },
+    {
+        "stop_name": "12th St & Washington Ave",
+        "arrival_time": "5:24am"
+    },
+    {
+        "stop_name": "Broad St & Oregon Ave",
+        "arrival_time": "5:38am"
+    }
+]

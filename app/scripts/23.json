@@ -1,0 +1,371 @@
+[
+    {
+        "stop_name": "Germantown & Bethlehem",
+        "arrival_time": "4:38am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3500"
+                },
+                {
+                    "type": "asian",
+                    "value": "3600"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3700"
+                },
+                {
+                    "type": "other",
+                    "value": "3800"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }
+    },
+    {
+        "stop_name": "Germantown Ave & Westview Ave",
+        "arrival_time": "4:45am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }
+    },
+    {
+        "stop_name": "Germantown Ave & Chelten Ave",
+        "arrival_time": "4:49am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }
+    },
+    {
+        "stop_name": "Broad St & Erie Ave",
+        "arrival_time": "4:59am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }        
+    },
+    {
+        "stop_name": "Germantown Ave & Lehigh Ave",
+        "arrival_time": "5:04am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }
+    },
+    {
+        "stop_name": "12th St & Girard Ave",
+        "arrival_time": "5:12am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }        
+    },
+    {
+        "stop_name": "12th St & Market St",
+        "arrival_time": "5:18am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }        
+    },
+    {
+        "stop_name": "12th St & Washington Ave",
+        "arrival_time": "5:24am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }        
+    },
+    {
+        "stop_name": "Broad St & Oregon Ave",
+        "arrival_time": "5:38am",
+        "stats": {
+            "geography": {
+                "neighborhood": "Germantown"
+            },
+            "demographics": [
+                {
+                    "type": "white",
+                    "value": "3400"
+                },
+                {
+                    "type": "black",
+                    "value": "3400"
+                },
+                {
+                    "type": "asian",
+                    "value": "3400"
+                },
+                {
+                    "type": "hispanic",
+                    "value": "3400"
+                },
+                {
+                    "type": "other",
+                    "value": "3400"
+                }                                                             
+            ],
+            "amenities": {
+                "food": "18",
+                "health": "12",
+                "place_of_worship": "10",
+                "school": "10",
+                "park": "1",
+                "train_station": "10",
+                "parking": "10",
+                "store": "10"
+            }
+        }        
+    }
+]
