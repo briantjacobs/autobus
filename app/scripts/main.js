@@ -8,10 +8,8 @@ bus = {
 			xValue = function(d) { return d[0]; },
 			yValue = function(d) { return d[1]; },
 			xScale = d3.time.scale(),
-			yScale = d3.scale.linear(),
-			xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(6, 0),
-			area = d3.svg.area().x(X).y1(Y),
-			line = d3.svg.line().x(X).y(Y);
+			yScale = d3.scale.linear()
+
 			//circle = d3.svg.arc().x(X).y(Y);
 
 		function chart(selection) {
@@ -32,16 +30,11 @@ bus = {
 					.domain([0, d3.max(data, function(d) { return d[1]; })])
 					.range([height - margin.top - margin.bottom, 0]);
 
-
 				// Select the svg element, if it exists.
 				var svg = d3.select(this).selectAll("svg").data([data]);
 
 				// Otherwise, create the skeletal chart.
 				var gEnter = svg.enter().append("svg").append("g");
-				gEnter.append("path").attr("class", "area");
-				gEnter.append("path").attr("class", "line");
-				gEnter.append("circle").attr("class", "circle");
-				gEnter.append("g").attr("class", "x axis");
 
 				// Update the outer dimensions.
 				svg .attr("width", width)
@@ -51,27 +44,21 @@ bus = {
 				var g = svg.select("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				// Update the area path.
-				g.select(".area")
-					.attr("d", area.y0(yScale.range()[0]));
 
-				// Update the line path.
-				g.select(".line")
-					.attr("d", line);
+				g.selectAll(".stops").data(data).enter()
+						.append("g").attr("class","stops")
+						.append("circle")
+								.attr("r", 3)
+								.attr("cx", function(d){return xScale(d[0]);})
+								.attr("cy", 0);
 
-				// Update the x-axis.
-				g.select(".x.axis")
-					.attr("transform", "translate(0," + yScale.range()[0] + ")")
-					.call(xAxis);
-
-				var enterStops = g.selectAll(".stops").data(data).enter()
-									.append("g").attr("class","stops");
-				
-					enterStops.append("circle")
-						.attr("r", 3)
-						.attr("cx", function(d){return xScale(d[0]);})
-						.attr("cy", yScale.range()[0]);
-
+				g.append("g").attr("class","line")
+					.append("line")
+						.style('stroke', "#000")
+						.attr("x1",0)
+						.attr("y1",0)
+						.attr("x2",xScale.range()[1])
+						.attr("y2",0);
 
 			});
 		}
@@ -127,10 +114,8 @@ bus = {
 			yValue = function(d) { return d.y; },
 			xScale = d3.time.scale(),
 			yScale = d3.scale.linear(),
-			xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(6, 0),
 			area = d3.svg.area(),
 			stack =  d3.layout.stack().offset("wiggle").order('inside-out'),
-			//stack = d3.layout.stack().offset("wiggle"),
 			color = d3.interpolateRgb("#ff0000", "#0000ff");
 
 		function chart(selection) {
@@ -149,25 +134,28 @@ bus = {
 			            	return d;
 			            });
            
+				var mergedData = d3.merge(data.map(function(d) {return d.values }));
+
 				stack
 					.x(function(d,i) {return d.x; })
 					.y(function(d,i) {return d.y; })
 					.values(function(d,i) {return d.values; });
 
- 				//console.log(stack(data));
 				// Select the svg element, if it exists.
 				var svg = d3.select(this).selectAll("svg").data([stack(data)]);
 
 				xScale
-					.domain(d3.extent(data[0].values.map(function(d) { return d.x; }).concat([])))
+					.domain(d3.extent(mergedData, function(d) { return d.x; }))
 					.range([0, width - margin.left - margin.right]);
 
 				// Update the y-scale.
 				yScale
-					.domain([0, d3.max(d3.merge(data.map(function(d) {return d.values })), function(d) {return d.y+d.y0})])
+					.domain([0, d3.max(mergedData, function(d) {return d.y+d.y0;})])
 					.range([height - margin.top - margin.bottom, 0]);
 
+				// this needs to be called after the stack(data) call...hmm
 				area
+					.interpolate("cardinal")
 					.x(function(d){return xScale(d.x);})
 					.y0(function(d){return yScale(d.y0);})
 					.y1(function(d) { return yScale(d.y0 + d.y); });
@@ -189,18 +177,33 @@ bus = {
 				//g.select(".area")
 				//	.attr("d", function(d,i) { console.log(d); return area(d.values) });
 
-
-				// Update the x-axis.
-				g.select(".x.axis")
-					.attr("transform", "translate(0," + yScale.range()[0] + ")")
-					.call(xAxis);
-
 				g.selectAll(".area").data(data).enter()
 									.append("path").attr("class", "area")
 									.style("fill", function() { return color(Math.random()); })
-									.attr("d", function(d,i) {return area(d.values) })
-									.on("mouseover", function(d, i) {
-									  console.log(d)
+									.attr("d", function(d,i) {return area(d.values) });
+
+				var timeLookup = d3.nest().key(function(d) { return d.x; }).entries(mergedData)
+
+
+				var domainIndexScale = d3.time.scale()
+										.domain(d3.extent(mergedData, function(d) { return d.x; }))
+										.range([0, data.length]);
+
+				svg.on("mousemove", function(d,i) {
+						var e = d3.event;
+
+						var timePos = xScale.invert(e.offsetX-margin.left);
+
+						//use d3 mapping?
+						timeLookup.map(function(h,i) {
+							var thetime = new Date(h.key)
+							if (thetime.getTime() == timePos.getTime()) {console.log(data[i])}
+						})
+
+					//	var domainIndexScale = d3.scale.linear()
+					//		.domain([topSeriesData[0].x, topSeriesData.slice(-1).shift().x])
+					//		.range([0, topSeriesData.length]);
+
 									});
 
 			});
@@ -267,7 +270,7 @@ var stopPlot = bus.stopPlot()
 		.x(function(d) { return formatDate.parse(d.arrival_time); })
 		.y(function(d) { return +Math.random(10); });
 
-	d3.select("#stops")
+	d3.select("#stream")
 		.datum(data)
 		.call(stopPlot);
 });
@@ -276,14 +279,14 @@ d3.json("scripts/test_stream.json", function(data) {
 	var formatDate = d3.time.format("%H:%M%p");
 
  	var streamPlot = bus.streamPlot()
-					.x(function(d) { return new Date(d[0]);  })
+					.x(function(d) { return formatDate.parse(d[0]);  })
 					.y(function(d) { return d[1]; })
-					
-
 
 	d3.select("#stream")
 		.datum(data)
 		.call(streamPlot);
+
+
 
 });
 
