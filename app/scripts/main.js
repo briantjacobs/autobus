@@ -120,21 +120,16 @@ bus = {
 
 		function chart(selection) {
 			selection.each(function(data,i) {
-				/*data = data.map(function(d) {
-			              return d.values.map(function(d,i) {
-			                return { x: xValue(), y: yValue()};
-			              })
-			            });*/
-          
 
 				data = data.map(function(d) {
-			             d.values = d.values.map(function(d,i) {
-			                return { x: xValue.call(data, d, i), y: yValue.call(data, d, i)};
-			              })
-			            	return d;
-			            });
-           
-				var mergedData = d3.merge(data.map(function(d) {return d.values }));
+							d.values = d.values.map(function(j,i) {
+								return { type:d.type, x: xValue.call(data, j, i), y: yValue.call(data, j, i)};
+							});
+							return d;
+						});
+
+				var mergedValues = d3.merge(data.map(function(d) {return d.values;}));
+				//console.log(data, mergedValues)
 
 				stack
 					.x(function(d,i) {return d.x; })
@@ -145,12 +140,12 @@ bus = {
 				var svg = d3.select(this).selectAll("svg").data([stack(data)]);
 
 				xScale
-					.domain(d3.extent(mergedData, function(d) { return d.x; }))
+					.domain(d3.extent(mergedValues, function(d) { return d.x; }))
 					.range([0, width - margin.left - margin.right]);
 
 				// Update the y-scale.
 				yScale
-					.domain([0, d3.max(mergedData, function(d) {return d.y+d.y0;})])
+					.domain([0, d3.max(mergedValues, function(d) {return d.y+d.y0;})])
 					.range([height - margin.top - margin.bottom, 0]);
 
 				// this needs to be called after the stack(data) call...hmm
@@ -175,35 +170,36 @@ bus = {
 
 				// Update the area path.
 				//g.select(".area")
-				//	.attr("d", function(d,i) { console.log(d); return area(d.values) });
+				//  .attr("d", function(d,i) { console.log(d); return area(d.values) });
 
 				g.selectAll(".area").data(data).enter()
 									.append("path").attr("class", "area")
 									.style("fill", function() { return color(Math.random()); })
 									.attr("d", function(d,i) {return area(d.values) });
 
-				var timeLookup = d3.nest().key(function(d) { return d.x; }).entries(mergedData)
+				var timeLookup = d3.nest()
+									.key(function(d) { return d.x; })
+									.entries(mergedValues);
 
-
-				var domainIndexScale = d3.time.scale()
-										.domain(d3.extent(mergedData, function(d) { return d.x; }))
-										.range([0, data.length]);
 
 				svg.on("mousemove", function(d,i) {
 						var e = d3.event;
-
 						var timePos = xScale.invert(e.offsetX-margin.left);
 
 						//use d3 mapping?
-						timeLookup.map(function(h,i) {
-							var thetime = new Date(h.key)
-							if (thetime.getTime() == timePos.getTime()) {console.log(data[i])}
-						})
+						timeLookup.forEach(function(h,i) {
+							//console.log(h)
+							var stopTime = new Date(h.key);
+							if (stopTime.getTime() == timePos.getTime()) {
+								console.log(timeLookup[i]);
 
-					//	var domainIndexScale = d3.scale.linear()
-					//		.domain([topSeriesData[0].x, topSeriesData.slice(-1).shift().x])
-					//		.range([0, topSeriesData.length]);
+							}
+						});
 
+				/*var domainIndexScale = d3.time.scale()
+										.domain(d3.extent(mergedValues, function(d) { return d.x; }))
+										.range([0, data.length]);
+				*/
 									});
 
 			});
@@ -278,7 +274,7 @@ var stopPlot = bus.stopPlot()
 d3.json("scripts/test_stream.json", function(data) {
 	var formatDate = d3.time.format("%H:%M%p");
 
- 	var streamPlot = bus.streamPlot()
+	var streamPlot = bus.streamPlot()
 					.x(function(d) { return formatDate.parse(d[0]);  })
 					.y(function(d) { return d[1]; })
 
@@ -292,7 +288,7 @@ d3.json("scripts/test_stream.json", function(data) {
 
 
 
-/*	var formatDate = d3.time.format("%H:%M%p");
+/*  var formatDate = d3.time.format("%H:%M%p");
 d3.select("#stream")
 		.call(bus.mychart
 				.height(500)
