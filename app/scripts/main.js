@@ -50,21 +50,21 @@ bus = {
 								.append("g").attr("class","stops");
 						
 						stops.append("circle")
-								.attr("r", 3)
-								.attr("cx", function(d){return X(d);})
-								.attr("cy", 0);
+							.attr("r", 3)
+							.attr("cx", function(d){return X(d);})
+							.attr("cy", 0);
 
 						var stopTarget = stops.append("rect")
-											.attr("r", 3)
-											.attr("x", function(d){return X(d)-6;})
-											.attr("y", 0)
-											.attr("width", 12)
-											.style("opacity", 0)
-											.attr("height", height-margin.bottom);
+							.attr("r", 3)
+							.attr("x", function(d){return X(d)-6;})
+							.attr("y", 0)
+							.attr("width", 12)
+							.style("opacity", 0)
+							.attr("height", height-margin.bottom);
 
 						stopTarget.on("mouseover",function(d,i) {
-							d3.selectAll(stopTarget[0]).style("opacity", 0)
-							d3.select(stopTarget[0][i]).style("opacity", 0.5).transition().duration(250)
+							d3.selectAll(stopTarget[0]).style("opacity", 0);
+							d3.select(stopTarget[0][i]).style("opacity", 0.5).transition().duration(250);
 						});
 
 
@@ -163,10 +163,10 @@ barChart : function() {
 
 			// Otherwise, create the skeletal chart.
 			var gEnter = svg.enter().append("svg").append("g");
-			gEnter.append("g").attr("class", "bars");
-			gEnter.append("g").attr("class", "y axis");
-			gEnter.append("g").attr("class", "x axis");
-			gEnter.append("g").attr("class", "x axis zero");
+				gEnter.append("g").attr("class", "bars");
+				gEnter.append("g").attr("class", "y axis");
+				gEnter.append("g").attr("class", "x axis");
+				gEnter.append("g").attr("class", "x axis zero");
 
 			// Update the outer dimensions.
 			svg .attr("width", width)
@@ -176,23 +176,20 @@ barChart : function() {
 			var g = svg.select("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-		 // Update the bars.
+			// Update the bars.
 			var bar = svg.select(".bars").selectAll(".bar").data(data);
 				bar.enter().append("rect");
 				bar.exit().remove();
 				bar.transition().duration(500)
-					.attr("class", function(d, i) { return d[1] < 0 ? "bar negative" : "bar positive"; })
+					.attr("class", "bar" )
 					.attr("y", function(d) { return Y(d); })
-					//.attr("x", function(d, i) { return d[1] < 0 ? X0() : X(d); })
 					.attr("x", function(d, i) { return 0; })
 					.attr("height", yScale.rangeBand())
 					.style("fill", function(d,i) { return color(d,i); })
 					.attr("width", function(d, i) { return Math.abs( X(d) - X0() ); });
 
-		// y axis at the bottom of the chart
+			// y axis at the bottom of the chart
 			g.select(".y.axis").transition().duration(500)
-			 // .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
-				//.call(yAxis.orient("bottom"));
 				.call(yAxis);
 		
 			// Update the x-axis.
@@ -271,9 +268,7 @@ barChart : function() {
 							});
 							return d;
 						});
-
 				var mergedValues = d3.merge(data.map(function(d) {return d.values;}));
-				//console.log(data, mergedValues)
 
 
 				area
@@ -287,8 +282,6 @@ barChart : function() {
 					.y(yValue)
 					.values(getValues);
 
-				// Select the svg element, if it exists.
-				var svg = d3.select(this).selectAll("svg").data([stack(data)]);
 
 				xScale
 					.domain(d3.extent(mergedValues, function(d) { return d.x; }))
@@ -301,10 +294,12 @@ barChart : function() {
 
 
 
+				// Select the svg element, if it exists.
+				var svg = d3.select(this).selectAll("svg").data([stack(data)]);
 
 				// Otherwise, create the skeletal chart.
 				var gEnter = svg.enter().append("svg").append("g");
-				gEnter.append("g").attr("class", "x axis");
+					gEnter.append("g").attr("class", "x axis");
 
 				// Update the outer dimensions.
 				svg .attr("width", width)
@@ -314,11 +309,6 @@ barChart : function() {
 				var g = svg.select("g")
 					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				// Update the area path.
-				//g.select(".area")
-				//  .attr("d", function(d,i) { console.log(d); return area(d.values) });
-
-
 				var areaPaths = g.selectAll(".area").data(data);
 								areaPaths.enter().append("path");
 								areaPaths.exit().remove();
@@ -327,36 +317,27 @@ barChart : function() {
 									.style("fill", function(d,i) { return color(d,i); })
 									.attr("d", function(d,i) {return area(d.values); });
 											
-								
-
-
 				var timeLookup = d3.nest()
 									.key(function(d) { return d.x; })
 									.entries(mergedValues);
 
-
 				svg.on("mousemove", function(d,i) {
-						var e = d3.event;
-						var timePosLeft = xScale.invert(e.offsetX-margin.left-10);
-						var timePosRight = xScale.invert(e.offsetX-margin.left+10);
+					var e = d3.event;
+					var timePosLeft = xScale.invert(e.offsetX-margin.left-10);
+					var timePosRight = xScale.invert(e.offsetX-margin.left+10);
 
-						timeLookup.forEach(function(h,i) {
-							var stopTime = new Date(h.key);
-							if (stopTime.getTime() > timePosLeft.getTime() && stopTime.getTime() < timePosRight.getTime()) {
-								var barChart = bus.barChart()
-									.x(function(d) { return d.y;  })
-									.y(function(d) { return d.type; });
-								d3.select("#bars")
-									.datum(timeLookup[i].values)
-									.call(barChart);
-							}
-						});
-
-				/*var domainIndexScale = d3.time.scale()
-										.domain(d3.extent(mergedValues, function(d) { return d.x; }))
-										.range([0, data.length]);
-				*/
-									});
+					timeLookup.forEach(function(h,i) {
+						var stopTime = new Date(h.key);
+						if (stopTime.getTime() > timePosLeft.getTime() && stopTime.getTime() < timePosRight.getTime()) {
+							var barChart = bus.barChart()
+								.x(function(d) { return d.y;  })
+								.y(function(d) { return d.type; });
+							d3.select("#bars")
+								.datum(timeLookup[i].values)
+								.call(barChart);
+						}
+					});
+				});
 
 			});
 		}
@@ -375,7 +356,6 @@ barChart : function() {
 			return yScale(d.y0);
 		}
 	
-
 		chart.margin = function(_) {
 			if (!arguments.length) return margin;
 			margin = _;
@@ -418,49 +398,44 @@ barChart : function() {
 $(function(){
 
 
+	d3.json("scripts/test_stream.json", function(data) {
+		var formatDate = d3.time.format("%H:%M%p");
 
-
-
-d3.json("scripts/test_stream.json", function(data) {
-	var formatDate = d3.time.format("%H:%M%p");
-
-	var streamPlot = bus.streamPlot()
-					.x(function(d) { 	
-						if (typeof d.x == "string") {
-							return formatDate.parse(d.x);
-						} else {
-							return d.x;
-						}
-					})
-					.y(function(d) { return d.y; })
-
-
-	d3.select("#stream")
-		.datum(data)
-		.call(streamPlot);
-
-	d3.json("scripts/test_stream2b.json", function(data2) {
-
-		$('.button').click(function(){
-				d3.select("#stream")
-					.datum(data2)
-					.call(streamPlot);
-		});
-	});
-
-	d3.json("scripts/23_stops.json", function(data) {
-	//bus.data = data;
-	var formatDate = d3.time.format("%H:%M%p");
-	var stopPlot = bus.stopPlot()
-			.x(function(d) { return formatDate.parse(d.arrival_time); })
-			.y(function(d) { return +Math.random(10); });
+		var streamPlot = bus.streamPlot()
+							.x(function(d) {
+								if (typeof d.x == "string") {
+									return formatDate.parse(d.x);
+								} else {
+									return d.x;
+								}
+							})
+							.y(function(d) { return d.y; });
 
 		d3.select("#stream")
 			.datum(data)
-			.call(stopPlot);
+			.call(streamPlot);
+
+		d3.json("scripts/test_stream2b.json", function(data2) {
+			$('.button').click(function(){
+					d3.select("#stream")
+						.datum(data2)
+						.call(streamPlot);
+			});
+		});
+
+		d3.json("scripts/23_stops.json", function(data) {
+		//bus.data = data;
+		var formatDate = d3.time.format("%H:%M%p");
+		var stopPlot = bus.stopPlot()
+				.x(function(d) { return formatDate.parse(d.arrival_time); })
+				.y(function(d) { return +Math.random(10); });
+
+			d3.select("#stream")
+				.datum(data)
+				.call(stopPlot);
+		});
+
+
 	});
-
-
-});
 
 });
